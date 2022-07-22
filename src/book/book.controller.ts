@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -7,9 +8,12 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseFilters,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
+import { BookException } from './book.exception';
+import { BookCustomExceptionFilter } from './book.exception.filter';
 import { BookGurad } from './book.guards';
 import { BookService } from './book.service';
 import { Book } from './Dto/book.dto';
@@ -21,7 +25,9 @@ export class BookController {
 
   @Get('/findAll')
   @UseGuards(new BookGurad())
+  @UseFilters(BookCustomExceptionFilter)
   getAllBooks(): Book[] {
+    throw new BadRequestException();
     return this.bookService.findAllBooks();
   }
 
