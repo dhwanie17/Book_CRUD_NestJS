@@ -15,7 +15,7 @@ export class BookInterceptor implements NestInterceptor {
     const request = ctx.getRequest<Request>();
     request.body.name = 'name';
     return next.handle().pipe(
-      map((data) => {
+      map(() => {
         return 'from interceptor';
       }),
     );

@@ -10,6 +10,7 @@ export class BookService {
   addBookService(book: Book): string {
     book.id = uuidv4();
     this.books.push(book);
+
     return 'Book has been successfully added';
   }
 

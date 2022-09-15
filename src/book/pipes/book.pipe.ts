@@ -1,14 +1,10 @@
-import {
-  ArgumentMetadata,
-  BadRequestException,
-  PipeTransform,
-} from '@nestjs/common';
+import { BadRequestException, PipeTransform } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { Book } from '../Dto/book.dto';
 
 export class BookPipe implements PipeTransform {
-  async transform(value: any, metadata: ArgumentMetadata): Promise<any> {
+  async transform(value: any): Promise<any> {
     //class transformer obj convert class
     const bookClass = plainToInstance(Book, value);
     //class validator
