@@ -14,9 +14,8 @@ export class BookService {
   }
 
   //update book
-  updateBookService(book: Book): string {
-    // eslint-disable-next-line prefer-const
-    let index = this.books.findIndex((currentBook) => {
+  updateBookService(id: string, book: Book): string {
+    const index = this.books.findIndex((currentBook) => {
       return currentBook.id == book.id;
     });
     this.books[index] = book;

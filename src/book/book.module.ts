@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { BookController } from './book.controller';
-import { BookMiddleWare } from './book.middleware';
+import { LoggerMiddleware } from './utils/logger.middleware';
 import { BookService } from './book.service';
 
 @Module({
@@ -10,6 +10,6 @@ import { BookService } from './book.service';
 })
 export class BookModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(BookMiddleWare).forRoutes('book');
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }

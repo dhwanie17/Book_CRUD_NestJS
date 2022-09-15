@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -10,11 +9,13 @@ import {
   Put,
   UseFilters,
   UseGuards,
+  UseInterceptors,
+  UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { BookException } from './book.exception';
 import { BookCustomExceptionFilter } from './book.exception.filter';
 import { BookGurad } from './book.guards';
+import { BookInterceptor } from './book.interceptors';
 import { BookService } from './book.service';
 import { Book } from './Dto/book.dto';
 import { BookPipe } from './pipes/book.pipe';
@@ -25,15 +26,16 @@ export class BookController {
 
   @Get('/findAll')
   @UseGuards(new BookGurad())
-  @UseFilters(BookCustomExceptionFilter)
-  getAllBooks(): Book[] {
-    throw new BadRequestException();
+  // @UseFilters(BookCustomExceptionFilter)
+  // @UseInterceptors(BookInterceptor)
+  @UsePipes(BookPipe)
+  getAllBooks(): any {
     return this.bookService.findAllBooks();
   }
 
-  @Put('/update')
-  updateBook(@Body() book: Book): string {
-    return this.bookService.updateBookService(book);
+  @Put('/update/:id')
+  updateBook(@Param('id') id: string, @Body() book: Book): string {
+    return this.bookService.updateBookService(id, book);
   }
 
   @Delete('/delete/:id')
@@ -47,6 +49,6 @@ export class BookController {
   @Get('/findById/:id')
   getBookById(@Param('id', ParseIntPipe) bookId: any): any {
     console.log(bookId, typeof bookId);
-    // return this.bookService.findBookByIdService(bookId);
+    return this.bookService.findBookByIdService(bookId);
   }
 }
