@@ -18,9 +18,11 @@ import { BookCustomExceptionFilter } from './filter/book.exception.filter';
 import { BookGurad } from './guard/book.guards';
 import { BookInterceptor } from './interceptors/book.interceptors';
 import { BookService } from './book.service';
-import { Book } from './Dto/book.dto';
+import { BookDto } from './Dto/book.dto';
 import { BookPipe } from './pipes/book.pipe';
 import { BookException } from './exceptions/book.exception';
+import { Observable } from 'rxjs';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 @Controller('book')
 export class BookController {
@@ -30,27 +32,29 @@ export class BookController {
   @UseGuards(new BookGurad())
   // @UseInterceptors(BookInterceptor)
   @UsePipes(BookPipe)
-  getAllBooks(): any {
+  getAllBooks(): Observable<BookDto[]> {
     return this.bookService.findAllBooks();
   }
 
   @Put('/update/:id')
-  updateBook(@Param('id') id: string, @Body() book: Book): string {
+  updateBook(
+    @Param('id') id: number,
+    @Body() book: BookDto,
+  ): Observable<UpdateResult> {
     return this.bookService.updateBookService(id, book);
   }
 
   @Delete('/delete/:id')
-  deleteBooks(@Param('id') bookId: string): string {
-    return this.bookService.deleteBookService(bookId);
+  deleteBooks(@Param('id') id: number): Observable<DeleteResult> {
+    return this.bookService.deleteBookService(id);
   }
   @Post('/add')
-  addBook(@Body(new BookPipe()) book: Book): string {
+  addBook(@Body(new BookPipe()) book: BookDto): Observable<BookDto> {
     return this.bookService.addBookService(book);
   }
   @Get('/findById/:id')
-  getBookById(@Param('id') bookId: any): any {
-    console.log(bookId, typeof bookId);
-    return this.bookService.findBookByIdService(bookId);
+  getBookById(@Param('id') id: number): Observable<BookDto> {
+    return this.bookService.findBookByIdService(id);
   }
   @Get('/exception')
   // @UseFilters(BookException)

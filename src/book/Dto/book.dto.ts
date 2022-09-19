@@ -1,8 +1,8 @@
 import { IsInt, IsString } from 'class-validator';
 
-export class Book {
+export class BookDto {
   @IsInt()
-  id: string;
+  id: number;
 
   @IsString()
   title: string;
